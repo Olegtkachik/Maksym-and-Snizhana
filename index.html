@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Запрошення на весілля 💍">
+    <meta property="og:description" content="Ми раді запросити вас на наше весілля!">
+    <meta property="og:image" content="images/1-screen.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="images/1-screen.png">
+    <title>Запрошення на весілля</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            background: #ffffff;
+        }
+
+        .invitation {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 0;
+        }
+
+        .invitation__image {
+            display: block;
+            width: 100%;
+            height: auto;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .invitation__image.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <main class="invitation">
+        <img class="invitation__image" src="images/1-screen.png" alt="">
+        <img class="invitation__image" src="images/2-screen.png" alt="">
+        <img class="invitation__image" src="images/3-screen.png" alt="">
+        <img class="invitation__image" src="images/4-screen.png" alt="">
+        <img class="invitation__image" src="images/5-screen.png" alt="">
+    </main>
+    <script src="index.js"></script>
+</body>
+</html>
