@@ -15,7 +15,7 @@ if ('IntersectionObserver' in window) {
             currentObserver.unobserve(entry.target);
         });
     }, {
-        threshold: 0.15,
+        threshold: 0.20,
     });
 
     images.forEach((image) => observer.observe(image));
