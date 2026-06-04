@@ -1,10 +1,20 @@
+const LOADER_DURATION = 3000;
+const LOADER_FADE_DURATION = 450;
+
+const body = document.body;
+const loader = document.querySelector('.loader');
 const images = document.querySelectorAll('.invitation__image');
 
 const revealImage = (image) => {
     image.classList.add('is-visible');
 };
 
-if ('IntersectionObserver' in window) {
+const startImageReveal = () => {
+    if (!('IntersectionObserver' in window)) {
+        images.forEach(revealImage);
+        return;
+    }
+
     const observer = new IntersectionObserver((entries, currentObserver) => {
         entries.forEach((entry) => {
             if (!entry.isIntersecting) {
@@ -19,6 +29,18 @@ if ('IntersectionObserver' in window) {
     });
 
     images.forEach((image) => observer.observe(image));
-} else {
-    images.forEach(revealImage);
-}
+};
+
+const showSite = () => {
+    body.classList.remove('is-loading');
+    body.classList.add('is-ready');
+    startImageReveal();
+
+    if (loader) {
+        window.setTimeout(() => {
+            loader.setAttribute('hidden', '');
+        }, LOADER_FADE_DURATION);
+    }
+};
+
+window.setTimeout(showSite, loader ? LOADER_DURATION : 0);
