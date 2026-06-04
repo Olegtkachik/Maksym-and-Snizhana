@@ -22,7 +22,11 @@
         }
 
         body {
-            background: #ffffff;
+            background: pink;
+        }
+
+        body.is-loading {
+            overflow: hidden;
         }
 
         .invitation {
@@ -30,6 +34,14 @@
             max-width: 680px;
             margin: 0 auto;
             line-height: 0;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.45s ease;
+        }
+
+        body.is-loading .invitation {
+            opacity: 0;
+            visibility: hidden;
         }
 
         .invitation__image {
@@ -38,16 +50,40 @@
             height: auto;
             opacity: 0;
             transform: translateY(40px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition: opacity 1s ease, transform 1s ease;
         }
 
         .invitation__image.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
+
+        .loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            display: grid;
+            place-items: center;
+            background: pink;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+        }
+
+        body.is-ready .loader {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader svg {
+            display: block;
+            width: 250px;
+            height: 250px;
+        }
     </style>
 </head>
-<body>
+<body class="is-loading">
     <main class="invitation">
         <img class="invitation__image" src="images/1-screen.png" alt="">
         <img class="invitation__image" src="images/2-screen.png" alt="">
@@ -55,6 +91,361 @@
         <img class="invitation__image" src="images/4-screen.png" alt="">
         <img class="invitation__image" src="images/5-screen.png" alt="">
     </main>
+    <div class="loader">
+        <svg
+            width="180"
+            height="180"
+            viewBox="0 0 180 180"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Wedding rings preloader"
+            >
+            <defs>
+                <!-- Gold gradients -->
+                <linearGradient id="goldMain" x1="35" y1="35" x2="145" y2="145" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FFF7D6" />
+                <stop offset="18%" stop-color="#F6D98A" />
+                <stop offset="38%" stop-color="#D49A2F" />
+                <stop offset="55%" stop-color="#FFF0B8" />
+                <stop offset="72%" stop-color="#B97718" />
+                <stop offset="88%" stop-color="#F0C96E" />
+                <stop offset="100%" stop-color="#FFF6D1" />
+                </linearGradient>
+
+                <linearGradient id="goldShadow" x1="40" y1="40" x2="130" y2="130" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#8A5710" stop-opacity="0.05" />
+                <stop offset="45%" stop-color="#8A5710" stop-opacity="0.55" />
+                <stop offset="100%" stop-color="#FFE39A" stop-opacity="0.08" />
+                </linearGradient>
+
+                <linearGradient id="goldHighlight" x1="50" y1="45" x2="105" y2="92" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+                <stop offset="45%" stop-color="#FFF2BF" stop-opacity="0.7" />
+                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+                </linearGradient>
+
+                <radialGradient id="glowGold" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#F6D98A" stop-opacity="0.55" />
+                <stop offset="100%" stop-color="#F6D98A" stop-opacity="0" />
+                </radialGradient>
+
+                <!-- Filters -->
+                <filter id="ringShadow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#B67A1D" flood-opacity="0.22"/>
+                </filter>
+
+                <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.4" result="blur"/>
+                <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+                </filter>
+
+                <filter id="sparkleGlow" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="1.6" result="blur"/>
+                <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+                </filter>
+
+                <style>
+                .preloader-bg-glow {
+                    animation: pulseGlow 4.2s ease-in-out infinite;
+                }
+
+                .rings-wrap {
+                    transform-origin: 90px 92px;
+                    animation: floatRings 4.4s ease-in-out infinite;
+                }
+
+                .ring-draw-left,
+                .ring-draw-right,
+                .ring-front-segment {
+                    stroke-dasharray: 240;
+                    stroke-dashoffset: 240;
+                }
+
+                .ring-draw-left {
+                    animation: drawRing 3.8s ease-in-out infinite;
+                }
+
+                .ring-draw-right {
+                    animation: drawRing 3.8s ease-in-out 0.35s infinite;
+                }
+
+                .ring-front-segment {
+                    animation: drawRingSegment 3.8s ease-in-out 0.35s infinite;
+                }
+
+                .orbit {
+                    transform-origin: 90px 90px;
+                    animation: rotateOrbit 8s linear infinite;
+                }
+
+                .heart {
+                    transform-origin: 90px 30px;
+                    animation: heartBeat 3.2s ease-in-out infinite;
+                }
+
+                .sparkle-1 { animation: sparkle 2.8s ease-in-out infinite; }
+                .sparkle-2 { animation: sparkle 2.8s ease-in-out .45s infinite; }
+                .sparkle-3 { animation: sparkle 2.8s ease-in-out .9s infinite; }
+
+                .shine-left {
+                    animation: shineMove 3.8s ease-in-out infinite;
+                }
+
+                .shine-right {
+                    animation: shineMove 3.8s ease-in-out .35s infinite;
+                }
+
+                @keyframes floatRings {
+                    0%, 100% { transform: translateY(0) scale(1); }
+                    50% { transform: translateY(-3px) scale(1.02); }
+                }
+
+                @keyframes drawRing {
+                    0%   { stroke-dashoffset: 240; opacity: .35; }
+                    35%  { stroke-dashoffset: 0; opacity: 1; }
+                    75%  { stroke-dashoffset: 0; opacity: 1; }
+                    100% { stroke-dashoffset: -240; opacity: .55; }
+                }
+
+                @keyframes drawRingSegment {
+                    0%   { stroke-dashoffset: 140; opacity: 0; }
+                    30%  { stroke-dashoffset: 50; opacity: 0; }
+                    45%  { stroke-dashoffset: 0; opacity: 1; }
+                    80%  { stroke-dashoffset: 0; opacity: 1; }
+                    100% { stroke-dashoffset: -140; opacity: 0; }
+                }
+
+                @keyframes rotateOrbit {
+                    from { transform: rotate(0deg); }
+                    to   { transform: rotate(360deg); }
+                }
+
+                @keyframes sparkle {
+                    0%, 100% { transform: scale(.65); opacity: .25; }
+                    50%      { transform: scale(1.2); opacity: 1; }
+                }
+
+                @keyframes heartBeat {
+                    0%, 100% { transform: scale(1); opacity: .85; }
+                    50%      { transform: scale(1.14); opacity: 1; }
+                }
+
+                @keyframes pulseGlow {
+                    0%, 100% { opacity: .35; transform: scale(0.95); }
+                    50%      { opacity: .65; transform: scale(1.04); }
+                }
+
+                @keyframes shineMove {
+                    0%, 100% { opacity: 0; }
+                    25%      { opacity: 0; }
+                    45%      { opacity: 1; }
+                    65%      { opacity: .4; }
+                    100%     { opacity: 0; }
+                }
+                </style>
+            </defs>
+
+            <!-- Subtle glow behind rings -->
+            <ellipse
+                class="preloader-bg-glow"
+                cx="90"
+                cy="96"
+                rx="58"
+                ry="42"
+                fill="url(#glowGold)"
+                opacity="0.5"
+            />
+
+            <!-- Rotating decorative orbit -->
+            <g class="orbit" opacity="0.9">
+                <path
+                d="M32 94C32 58 57 32 94 32"
+                stroke="url(#goldMain)"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-dasharray="36 14"
+                opacity="0.85"
+                />
+                <path
+                d="M142 81C147 117 120 145 84 145"
+                stroke="url(#goldMain)"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-dasharray="42 18"
+                opacity="0.75"
+                />
+                <circle cx="44" cy="118" r="2.4" fill="#D9A640"/>
+                <circle cx="126" cy="60" r="2.2" fill="#F0CD74"/>
+                <circle cx="89" cy="146" r="2" fill="#F6D98A"/>
+            </g>
+
+            <!-- Heart -->
+            <path
+                class="heart"
+                d="M90 36C85.2 31.7 78 27.1 78 20.2C78 15.8 81.4 12.8 85.5 12.8C88.1 12.8 89.5 14 90 15C90.5 14 91.9 12.8 94.5 12.8C98.6 12.8 102 15.8 102 20.2C102 27.1 94.8 31.7 90 36Z"
+                fill="#D8A13B"
+            />
+
+            <!-- Rings -->
+            <g class="rings-wrap" filter="url(#ringShadow)">
+                <!-- RIGHT RING (back ring) -->
+                <g transform="rotate(14 101 82)">
+                <ellipse
+                    class="ring-draw-right"
+                    cx="101"
+                    cy="82"
+                    rx="31"
+                    ry="28"
+                    stroke="url(#goldMain)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                />
+                <ellipse
+                    cx="101"
+                    cy="82"
+                    rx="31"
+                    ry="28"
+                    stroke="url(#goldShadow)"
+                    stroke-width="10"
+                    fill="none"
+                    opacity="0.55"
+                />
+                <ellipse
+                    cx="101"
+                    cy="82"
+                    rx="25.5"
+                    ry="22.5"
+                    stroke="#FFF5D1"
+                    stroke-width="1.8"
+                    fill="none"
+                    opacity="0.92"
+                />
+                <ellipse
+                    cx="101"
+                    cy="82"
+                    rx="35"
+                    ry="31.8"
+                    stroke="#FFF8E1"
+                    stroke-width="1.2"
+                    fill="none"
+                    opacity="0.4"
+                />
+                </g>
+
+                <!-- LEFT RING (front ring) -->
+                <g transform="rotate(-15 70 92)">
+                <ellipse
+                    class="ring-draw-left"
+                    cx="70"
+                    cy="92"
+                    rx="31"
+                    ry="28"
+                    stroke="url(#goldMain)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                />
+                <ellipse
+                    cx="70"
+                    cy="92"
+                    rx="31"
+                    ry="28"
+                    stroke="url(#goldShadow)"
+                    stroke-width="10"
+                    fill="none"
+                    opacity="0.55"
+                />
+                <ellipse
+                    cx="70"
+                    cy="92"
+                    rx="25.5"
+                    ry="22.5"
+                    stroke="#FFF5D1"
+                    stroke-width="1.8"
+                    fill="none"
+                    opacity="0.95"
+                />
+                <ellipse
+                    cx="70"
+                    cy="92"
+                    rx="35"
+                    ry="31.8"
+                    stroke="#FFF8E1"
+                    stroke-width="1.2"
+                    fill="none"
+                    opacity="0.42"
+                />
+                </g>
+
+                <!-- Front overlap segment of right ring to simulate interlocking -->
+                <g transform="rotate(14 101 82)">
+                <path
+                    class="ring-front-segment"
+                    d="M90 106C96 109 105 108 113 104C119 101 125 95 128 87"
+                    stroke="url(#goldMain)"
+                    stroke-width="10"
+                    stroke-linecap="round"
+                    fill="none"
+                />
+                <path
+                    d="M90 106C96 109 105 108 113 104C119 101 125 95 128 87"
+                    stroke="#FFF5D0"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    fill="none"
+                    opacity="0.8"
+                />
+                </g>
+
+                <!-- Animated shines -->
+                <g filter="url(#softGlow)">
+                <path
+                    class="shine-left"
+                    d="M49 74C54 67 61 63 70 61"
+                    stroke="url(#goldHighlight)"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    opacity="0"
+                />
+                <path
+                    class="shine-right"
+                    d="M92 57C98 54 105 55 112 58"
+                    stroke="url(#goldHighlight)"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    opacity="0"
+                />
+                </g>
+            </g>
+
+            <!-- Sparkles -->
+            <g filter="url(#sparkleGlow)">
+                <path
+                class="sparkle-1"
+                d="M130 42L132.5 49.5L140 52L132.5 54.5L130 62L127.5 54.5L120 52L127.5 49.5L130 42Z"
+                fill="#F5CF73"
+                />
+                <path
+                class="sparkle-2"
+                d="M38 56L40 62L46 64L40 66L38 72L36 66L30 64L36 62L38 56Z"
+                fill="#F5CF73"
+                />
+                <path
+                class="sparkle-3"
+                d="M121 123L123 129L129 131L123 133L121 139L119 133L113 131L119 129L121 123Z"
+                fill="#F5CF73"
+                />
+            </g>
+            </svg>
+    </div>
     <script src="index.js"></script>
 </body>
 </html>
