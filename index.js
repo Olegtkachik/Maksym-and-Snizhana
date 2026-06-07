@@ -43,4 +43,24 @@ const showSite = () => {
     }
 };
 
-window.setTimeout(showSite, loader ? LOADER_DURATION : 0);
+const wait = (duration) => new Promise((resolve) => {
+    window.setTimeout(resolve, duration);
+});
+
+const waitForPageLoad = () => new Promise((resolve) => {
+    if (document.readyState === 'complete') {
+        resolve();
+        return;
+    }
+
+    window.addEventListener('load', resolve, { once: true });
+});
+
+if (loader) {
+    Promise.all([
+        wait(LOADER_DURATION),
+        waitForPageLoad(),
+    ]).then(showSite);
+} else {
+    showSite();
+}
