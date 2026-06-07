@@ -47,6 +47,12 @@ const wait = (duration) => new Promise((resolve) => {
     window.setTimeout(resolve, duration);
 });
 
+const waitForPaint = () => new Promise((resolve) => {
+    window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(resolve);
+    });
+});
+
 const waitForPageLoad = () => new Promise((resolve) => {
     if (document.readyState === 'complete') {
         resolve();
@@ -58,7 +64,7 @@ const waitForPageLoad = () => new Promise((resolve) => {
 
 if (loader) {
     Promise.all([
-        wait(LOADER_DURATION),
+        waitForPaint().then(() => wait(LOADER_DURATION)),
         waitForPageLoad(),
     ]).then(showSite);
 } else {
