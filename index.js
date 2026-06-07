@@ -1,4 +1,4 @@
-const LOADER_DURATION = 3000;
+const LOADER_DURATION = 2500;
 const LOADER_FADE_DURATION = 450;
 
 const body = document.body;
